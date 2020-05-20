@@ -1,0 +1,7 @@
+data/org.github.paprikkafox.zerotier-one-gtk.desktop.in
+data/org.github.paprikkafox.zerotier-one-gtk.appdata.xml.in
+data/org.github.paprikkafox.zerotier-one-gtk.gschema.xml
+src/window.ui
+src/main.vala
+src/window.vala
+
