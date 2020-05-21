@@ -16,21 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace ZeroTierOneGTK {
-	[GtkTemplate (ui = "/org/github/paprikkafox/zerotier-one-gtk/ui/mainwindow.ui")]
+namespace ComponentLibrary {
+
+	[GtkTemplate (ui = "/org/github/paprikkafox/zerotier-one-gtk/ui/window.ui")]
 	public class Window : Gtk.ApplicationWindow {
-
-	[GtkChild] Gtk.ListBox network_list_box;
-	[GtkChild] Gtk.ListBoxRow network_row;
-	[GtkChild] Gtk.Label connection_status_label;
-
 		public Window (Gtk.Application app) {
 			Object (application: app);
-            setText();
+
 		}
 
-		public void setText (){
-            network_row.visible = false;
-		}
+
+	}
+
+
+	[GtkTemplate (ui = "/org/github/paprikkafox/zerotier-one-gtk/ui/components/network-row.ui")]
+	public class NetworkRow : Gtk.ListBoxRow {
+	    public NetworkRow (){
+
+
+
+	    }
+
+	}
+
+	[GtkTemplate (ui = "/org/github/paprikkafox/zerotier-one-gtk/ui/components/network-list.ui")]
+	public class NetworkList : Gtk.Box {
+	    public NetworkList (){
+
+	    }
+
 	}
 }

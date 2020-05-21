@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/github/paprikkafox/zerotier-one-gtk">
-    <file>ui/mainwindow.ui</file>
+    <file>ui/window.ui</file>
+    <file>ui/components/network-row.ui</file>
+    <file>ui/components/network-list.ui</file>
   </gresource>
 </gresources>

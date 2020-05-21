@@ -1,5 +1,5 @@
 views = files(
-'mainwindow.vala'
+'component-library.vala'
 )
 zerotieronegtk_sources += views
 

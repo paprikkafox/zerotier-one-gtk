@@ -1,4 +1,4 @@
-/* main.vala
+/* window.vala
  *
  * Copyright 2020 Dmitry Fox
  *
@@ -16,16 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-int main (string[] args) {
-	var app = new Gtk.Application ("org.github.paprikkafox.zerotier-one-gtk", ApplicationFlags.FLAGS_NONE);
-	app.activate.connect (() => {
-		var win = app.active_window;
-		if (win == null) {
-			win = new ComponentLibrary.Window (app);
+namespace ZeroTierOneGTK {
+
+	[GtkTemplate (ui = "/org/github/paprikkafox/zerotier-one-gtk/ui/network-list-view.ui")]
+	public class NetworkListView : Gtk.ApplicationWindow {
+	[GtkChild] public Gtk.ListBox network_list_box;
+		public NetworkListView (Gtk.Application app) {
+			Object (application: app);
+
+			network_list_box.add(new NetworkRow());
+			network_list_box.add(new NetworkRow());
 
 		}
-		win.present ();
-	});
 
-	return app.run (args);
+
+	}
+
+
+	[GtkTemplate (ui = "/org/github/paprikkafox/zerotier-one-gtk/ui/components/network-row.ui")]
+	public class NetworkRow : Gtk.ListBoxRow {
+	    public NetworkRow (){
+
+
+
+	    }
+
+	}
 }
