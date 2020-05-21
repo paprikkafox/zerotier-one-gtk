@@ -3,6 +3,7 @@
   <gresource prefix="/org/github/paprikkafox/zerotier-one-gtk">
     <file>ui/window.ui</file>
     <file>ui/components/network-row.ui</file>
-    <file>ui/components/network-list.ui</file>
+    <file>ui/views/network-list-view.ui</file>
+    <file>ui/views/welcome-view.ui</file>
   </gresource>
 </gresources>

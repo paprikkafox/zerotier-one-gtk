@@ -19,9 +19,18 @@
 int main (string[] args) {
 	var app = new Gtk.Application ("org.github.paprikkafox.zerotier-one-gtk", ApplicationFlags.FLAGS_NONE);
 	app.activate.connect (() => {
+
 		var win = app.active_window;
+
+		var first_time = true;
+
 		if (win == null) {
-			win = new ComponentLibrary.Window (app);
+		    if (first_time == true){
+                win = new AppComponents.Window (app);
+                win.add(new AppComponents.WelcomeView());
+		    } else {
+		        win = new AppComponents.Window (app);
+		    }
 
 		}
 		win.present ();
