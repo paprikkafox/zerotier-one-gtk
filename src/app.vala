@@ -22,7 +22,7 @@ int main (string[] args) {
 
 		var win = app.active_window;
 
-		var first_time = true;
+		var first_time = false;
 
 		if (win == null) {
 		    if (first_time == true){
@@ -30,6 +30,11 @@ int main (string[] args) {
                 win.add(new AppComponents.WelcomeView());
 		    } else {
 		        win = new AppComponents.Window (app);
+
+                var network_list = new AppComponents.NetworkListView();
+
+                win.add(network_list);
+
 		    }
 
 		}

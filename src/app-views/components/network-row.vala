@@ -2,8 +2,32 @@ namespace AppComponents {
 
 	[GtkTemplate (ui = "/org/github/paprikkafox/zerotier-one-gtk/ui/components/network-row.ui")]
 	public class NetworkRow : Gtk.ListBoxRow {
-	    public NetworkRow (){
 
-	    }
+        [GtkChild] Gtk.Label network_name_label;
+        [GtkChild] Gtk.Label network_id_label;
+
+        [GtkChild] Gtk.Label connection_status_label;
+        [GtkChild] Gtk.Label assigned_ips_label;
+        [GtkChild] Gtk.Label auth_status_label;
+        [GtkChild] Gtk.Label network_type_label;
+
+	    public NetworkRow (
+	        string network_name,
+	        string network_id,
+            string connection_status,
+            string assigned_ips,
+            string auth_status,
+            string network_type)
+            {
+
+                network_name_label.set_text(network_name);
+                network_id_label.set_text(network_id);
+
+                connection_status_label.set_text(connection_status);
+                assigned_ips_label.set_text(assigned_ips);
+                auth_status_label.set_text(auth_status);
+                network_type_label.set_text(network_type);
+
+            }
 	}
 }
