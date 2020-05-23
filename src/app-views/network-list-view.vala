@@ -63,18 +63,18 @@ namespace AppComponents {
                 string name = obj.get_string_member("name");
                 string status = obj.get_string_member("status");
                 string type = obj.get_string_member("type");
-                var assignedAddresses = obj.get_array_member("assignedAddresses");
+                string mac = obj.get_string_member("mac");
 
-                var assignedAddressesLenght = assignedAddresses.get_string_element(0);
+                var assignedAddresses = obj.get_array_member("assignedAddresses").get_string_element(0);
 
-                print(assignedAddressesLenght);
-
-                // print("\n");
-                // print(id + "\n");
-                // print(name + "\n");
-                // print(status + "\n");
-                // print(type + "\n");
-                // print("\n");
+                print("\n");
+                print(id + "\n");
+                print(assignedAddresses + "\n");
+                print(name + "\n");
+                print(status + "\n");
+                print(type + "\n");
+                print(mac + "\n");
+                print("\n");
             }
 
 
