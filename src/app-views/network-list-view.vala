@@ -4,22 +4,26 @@ namespace AppComponents {
 	public class NetworkListView : Gtk.Box {
 	[GtkChild] public Gtk.ListBox network_list_box;
 
-
         public string NetworksListJson;
 	    public string NetworksListError;
 	    public int NetworksListStatus;
-
+        public uint array_lenght;
 
 	    public NetworkListView (){
 
-			new Thread<int>("", () => {
+			new Thread<int>("add_network_nodes_to_view", () => {
 
 				reciveNetworkList();
 				if (NetworksListJson != ""){
 					print("Recived Networks JSON. Error Code - " + NetworksListStatus.to_string() + "\n");
                     var networks = NetworkfromJsonObject();
-                    network_list_box.add(new AppComponents.NetworkRow(networks[0,0], networks[0,1], networks[0,2], networks[0,3], networks[0,4]));
-                    network_list_box.add(new AppComponents.NetworkRow(networks[1,0], networks[1,1], networks[1,2], networks[1,3], networks[1,4]));
+
+                    var i = 0;
+                    for(i = 0; i < array_lenght; i++){
+                        network_list_box.add(new AppComponents.NetworkRow(networks[i, 0], networks[i, 1], networks[i, 2], networks[i, 3], networks[i, 4]));
+                    }
+
+
 				} else {
 				    print(NetworksListError + "Error Code - " + NetworksListStatus.to_string() + "\n");
 				}
@@ -30,7 +34,6 @@ namespace AppComponents {
 
 
 	    }
-
 
 	    int reciveNetworkList(){
 
@@ -53,41 +56,46 @@ namespace AppComponents {
             parser.load_from_data(NetworksListJson);
             Json.Node root = parser.get_root();
 
-            var arrays = root.get_array();
-            var arrays_lenght = arrays.get_length();
+            var array = root.get_array();
 
-            string[,] networks = new string[arrays_lenght,5];
+
+            array_lenght = array.get_length();
+
+            string[,] networks = new string[array_lenght,5];
 
             var i = 0;
-            for (i = 0; i < arrays_lenght; i++)
+            for (i = 0; i < array_lenght; i++)
             {
-                Json.Node node = arrays.get_element(i);
+                Json.Node node = array.get_element(i);
 
                 Json.Object obj = node.get_object();
-
 
                 string name = obj.get_string_member("name");
                 string id = obj.get_string_member("id");
                 string status = obj.get_string_member("status");
                 string type = obj.get_string_member("type");
 
-                var assignedAddresses = obj.get_array_member("assignedAddresses").get_string_element(0);
 
-                // if (name != ""){
-                //     print(name + "\n");
-                // } else {
-                // print("Not assinged name\n");
-                // }
+                var assignedAddressesArray = obj.get_array_member("assignedAddresses");
+                var assignedAddressesString = "";
 
+                var ip_num = 0;
+                assignedAddressesArray.foreach_element(() => {
+                    assignedAddressesString += "\n" + assignedAddressesArray.get_string_element(ip_num);
+                    ip_num = ip_num + 1;
+                });
 
+                if (name == ""){
+                    name = "Not Authenticated network!";
+                    networks[i, 0] = name;
+                } else {
+                    networks[i, 0] = name;
+                }
 
-
-                networks[i, 0] = name;
                 networks[i, 1] = id;
                 networks[i, 2] = status;
                 networks[i, 3] = type;
-                //assigned ips
-                networks[i, 4] = assignedAddresses;
+                networks[i, 4] = assignedAddressesString;
 
             }
 
