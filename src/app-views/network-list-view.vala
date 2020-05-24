@@ -15,7 +15,7 @@ namespace AppComponents {
 
 				reciveNetworkList();
 				if (NetworksListJson != ""){
-					print("Recived Networks JSON. Error Code - " + NetworksListStatus.to_string() + "\n");
+					print("[DEBUG] Recived Networks JSON. Code - " + NetworksListStatus.to_string() + "\n");
                     var networks = NetworkfromJsonObject();
 
                     var i = 0;
@@ -25,7 +25,7 @@ namespace AppComponents {
 
 
 				} else {
-				    print(NetworksListError + "Error Code - " + NetworksListStatus.to_string() + "\n");
+				    print("[ERROR]" + NetworksListError + "Error Code - " + NetworksListStatus.to_string() + "\n");
 				}
 
                 return(0);
@@ -42,8 +42,10 @@ namespace AppComponents {
 									        out NetworksListJson,
 									        out NetworksListError,
 									        out NetworksListStatus);
+			    print("[DEBUG] Spawned ZeroTier CLI - ListNetworks\n");
 
 	        } catch (SpawnError e) {
+	            print("[ERROR] Something happened when spawning CLI process " + e.code.to_string());
 		        return(e.code);
 	        }
 	        return(0);
@@ -53,11 +55,17 @@ namespace AppComponents {
         public string[,] NetworkfromJsonObject(){
 
             Json.Parser parser = new Json.Parser ();
-            parser.load_from_data(NetworksListJson);
+
+            try {
+		        parser.load_from_data(NetworksListJson);
+
+	        } catch (Error e) {
+		        print("[ERROR] Catched a error while building JSON parser - " + e.code.to_string());
+	        }
+
             Json.Node root = parser.get_root();
 
             var array = root.get_array();
-
 
             array_lenght = array.get_length();
 
