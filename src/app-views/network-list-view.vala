@@ -9,6 +9,7 @@ namespace AppComponents {
 	    public string NetworksListError;
 	    public int NetworksListStatus;
 
+
 	    public NetworkListView (){
 
 			new Thread<int>("", () => {
@@ -16,7 +17,11 @@ namespace AppComponents {
 				reciveNetworkList();
 				if (NetworksListJson != ""){
 					print("Recived Networks JSON. Error Code - " + NetworksListStatus.to_string() + "\n");
-                    NetworkfromJsonObject();
+                    var networks = NetworkfromJsonObject();
+
+                    print(networks[0,1]);
+                    print(networks[1,1]);
+
 				} else {
 				    print(NetworksListError + "Error Code - " + NetworksListStatus.to_string() + "\n");
 				}
@@ -44,16 +49,19 @@ namespace AppComponents {
 
 	    }
 
-        public void NetworkfromJsonObject(){
+        public string[,] NetworkfromJsonObject(){
 
             Json.Parser parser = new Json.Parser ();
             parser.load_from_data(NetworksListJson);
             Json.Node root = parser.get_root();
 
             var arrays = root.get_array();
+            var arrays_lenght = arrays.get_length();
+
+            string[,] networks = new string[arrays_lenght,5];
 
             var i = 0;
-            for (i = 0; i < arrays.get_length(); i++)
+            for (i = 0; i < arrays_lenght; i++)
             {
                 Json.Node node = arrays.get_element(i);
 
@@ -67,19 +75,24 @@ namespace AppComponents {
 
                 var assignedAddresses = obj.get_array_member("assignedAddresses").get_string_element(0);
 
-                print("\n");
-                print(id + "\n");
-                print(assignedAddresses + "\n");
-                print(name + "\n");
-                print(status + "\n");
-                print(type + "\n");
-                print(mac + "\n");
-                print("\n");
+
+                // if (name != ""){
+                //     print(name + "\n");
+                // } else {
+                // print("Not assinged name\n");
+                // }
+
+
+
+                networks[i, 0] = id;
+                networks[i, 1] = name;
+                networks[i, 2] = status;
+                networks[i, 3] = type;
+                networks[i, 4] = mac;
+
             }
 
-
-
-
+            return(networks);
         }
 
 	}
