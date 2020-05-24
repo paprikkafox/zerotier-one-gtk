@@ -18,10 +18,8 @@ namespace AppComponents {
 				if (NetworksListJson != ""){
 					print("Recived Networks JSON. Error Code - " + NetworksListStatus.to_string() + "\n");
                     var networks = NetworkfromJsonObject();
-
-                    print(networks[0,1]);
-                    print(networks[1,1]);
-
+                    network_list_box.add(new AppComponents.NetworkRow(networks[0,0], networks[0,1], networks[0,2], networks[0,3], networks[0,4]));
+                    network_list_box.add(new AppComponents.NetworkRow(networks[1,0], networks[1,1], networks[1,2], networks[1,3], networks[1,4]));
 				} else {
 				    print(NetworksListError + "Error Code - " + NetworksListStatus.to_string() + "\n");
 				}
@@ -67,14 +65,13 @@ namespace AppComponents {
 
                 Json.Object obj = node.get_object();
 
-                string id = obj.get_string_member("id");
+
                 string name = obj.get_string_member("name");
+                string id = obj.get_string_member("id");
                 string status = obj.get_string_member("status");
                 string type = obj.get_string_member("type");
-                string mac = obj.get_string_member("mac");
 
                 var assignedAddresses = obj.get_array_member("assignedAddresses").get_string_element(0);
-
 
                 // if (name != ""){
                 //     print(name + "\n");
@@ -84,11 +81,13 @@ namespace AppComponents {
 
 
 
-                networks[i, 0] = id;
-                networks[i, 1] = name;
+
+                networks[i, 0] = name;
+                networks[i, 1] = id;
                 networks[i, 2] = status;
                 networks[i, 3] = type;
-                networks[i, 4] = mac;
+                //assigned ips
+                networks[i, 4] = assignedAddresses;
 
             }
 
