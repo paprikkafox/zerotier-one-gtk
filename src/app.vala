@@ -29,7 +29,7 @@ int main (string[] args) {
                 win = new AppComponents.Window (app);
                 win.add(new AppComponents.WelcomeView());
 		    } else {
-		        win = new AppComponents.Window (app);
+				win = new AppComponents.Window (app);
 
                 var network_list = new AppComponents.NetworkListView();
 
