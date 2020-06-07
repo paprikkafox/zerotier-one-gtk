@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2020 Dmitry Fox <https://github.com/paprikkafox> -->
+<component type="desktop-application">
+    <id>com.github.paprikkafox.zerotier-one-gtk.desktop</id>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0+</project_license>
+    <name>ZeroTier One</name>
+    <summary>GTK3+ Wrapper for ZeroTier CLI</summary>
+    <developer_name>Dmitry Fox</developer_name>
+    <provides>
+        <binary>com.github.paprikkafox.zerotier-one-gtk</binary>
+    </provides>
+    <screenshots>
+        <screenshot type="default">
+            <image>https://raw.githubusercontent.com/paprikkafox/zerotier-one-gtk/master/data/images/screenshot.png</image>
+        </screenshot>
+    </screenshots>
+    <description>
+        <p>GTK3+ Wrapper for ZeroTier CLI</p>
+    </description>   
+    <url type="homepage">https://paprikkafox.github.io/zerotier-one-gtk/</url>
+    <url type="bugtracker">https://github.com/paprikkafox/zerotier-one-gtk/issues</url>
+    <url type="help">https://github.com/paprikkafox/zerotier-one-gtk/issues</url>
+    <update_contact>paprikkafox@gmail.com</update_contact>
+    <custom>
+        <value key="x-appcenter-color-primary">#546A79</value>
+        <value key="x-appcenter-color-primary-text">#ECF0F1</value>
+        <value key="x-appcenter-suggested-price">1</value>
+    </custom>
+</component>

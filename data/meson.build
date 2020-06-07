@@ -1,6 +1,25 @@
+icon_sizes = ['16','24','32', '48', '64', '128']
+
+foreach i : icon_sizes
+    install_data(
+        join_paths('images', 'icons', i, meson.project_name() + '.svg'),
+        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', i + 'x' + i, 'apps')
+    )
+endforeach
+
+install_data(
+    join_paths('images', meson.project_name() + '.svg'),
+    install_dir: join_paths(get_option('datadir'), 'zerotier-one-gtk', 'images')
+)
+
+install_data(
+    join_paths('images', meson.project_name() + '.png'),
+    install_dir: join_paths(get_option('datadir'), 'pixmaps')
+)
+
 desktop_file = i18n.merge_file(
-  input: 'org.github.paprikkafox.zerotier-one-gtk.desktop.in',
-  output: 'org.github.paprikkafox.zerotier-one-gtk.desktop',
+  input: meson.project_name() + '.desktop.in',
+  output: meson.project_name() + '.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -15,8 +34,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-  input: 'org.github.paprikkafox.zerotier-one-gtk.appdata.xml.in',
-  output: 'org.github.paprikkafox.zerotier-one-gtk.appdata.xml',
+  input: meson.project_name() + '.appdata.xml.in',
+  output: meson.project_name() + '.appdata.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -29,8 +48,9 @@ if appstream_util.found()
   )
 endif
 
-install_data('org.github.paprikkafox.zerotier-one-gtk.gschema.xml',
-  install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
+install_data(
+    meson.project_name() + '.gschema.xml',
+    install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
 )
 
 compile_schemas = find_program('glib-compile-schemas', required: false)

@@ -1,0 +1,45 @@
+# ZeroTier One GTK Locale File.
+# Copyright (C) 2020
+# This file is distributed under the same license as the com.github.paprikkafox.zerotier-one-gtk package.
+# Dmitry Fox <paprikka.fox@gmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.paprikkafox.zerotier-one-gtk\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-27 16:53-0000\n"
+"PO-Revision-Date: 2020-05-27 16:53-0000\n"
+"Last-Translator:  Dmitry Fox <paprikka.fox@gmail.com>\n"
+"Language-Team: English United States <en_US@li.org>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/configs/Properties.vala:30
+msgid "App Template"
+msgstr ""
+
+#: src/configs/Properties.vala:31
+msgid "Close"
+msgstr ""
+
+#: src/configs/Properties.vala:32
+msgid "Welcome"
+msgstr ""
+
+#: src/configs/Properties.vala:33
+msgid "This app is just a template"
+msgstr ""
+
+#: src/configs/Properties.vala:34
+msgid "Preferences"
+msgstr ""
+
+#: src/configs/Properties.vala:35
+msgid "Settings"
+msgstr ""
+
+#: data/com.github.paprikkafox.zerotier-one-gtk.desktop.in:3
+msgid "GTK3+ Wrapper for ZeroTier CLI"
+msgstr ""
