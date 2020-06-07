@@ -1,22 +1,27 @@
-sources = files(
-    'configs/Constants.vala',
-    'configs/Properties.vala',
-    'configs/Settings.vala',
-    
-    'controllers/AppController.vala',
+zerotieronegtk_sources = [
+  'app.vala',
+]
 
-    'utils/NetworkUtil.vala',
+subdir('app-views')
+subdir('cli-tools')
 
-    'views/WelcomeView.vala',
-    'views/NetworksView.vala',
+zerotieronegtk_deps = [
+  dependency('gio-2.0', version: '>= 2.50'),
+  dependency('gtk+-3.0', version: '>= 3.22'),
+  dependency('json-glib-1.0', version: '1.4.4'),
 
-    'widgets/DialogPreferences.vala',
-    'widgets/DialogAddNetwork.vala',
-    'widgets/HeaderBar.vala',
-    'widgets/NetworkList.vala',
-    'widgets/NetworkRow.vala',
+]
 
-    'Application.vala',
-    'Main.vala',
-    'Window.vala'
+gnome = import('gnome')
+
+zerotieronegtk_sources += gnome.compile_resources('zerotieronegtk-resources',
+  'zerotieronegtk.gresource.xml',
+  c_name: 'zerotieronegtk'
 )
+
+executable('zerotieronegtk', zerotieronegtk_sources,
+  vala_args: '--target-glib=2.50',  dependencies: zerotieronegtk_deps,
+  install: true,
+)
+
+

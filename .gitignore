@@ -1,8 +1,1 @@
-build/*
-builddir/*
-debian/build/*
-debian/com.github.paprikkafox.zerotier-one-gtk.debhelper.log
-debian/com.github.paprikkafox.zerotier-one-gtk.substvars
-debian/com.github.paprikkafox.zerotier-one-gtk/
-debian/debhelper-build-stamp
-debian/files
+builddir
