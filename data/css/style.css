@@ -17,14 +17,15 @@
 * Boston, MA 02110-1301 USA
 */
 
-@define-color colorPrimary #546A79;
-@define-color textColorPrimary #ECF0F1;
-
-.h1-title {
+.h1-text {
     font-size: 22px;
     font-family: "Cantarell";
+    font-weight: bolder;
 }
 
-.row{
-    
+.h4-text {
+    font-size: 12px;
+    font-family: "Cantarell";
+    font-weight: normal;
 }
+

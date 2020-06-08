@@ -53,7 +53,7 @@ namespace App.Widgets {
 
             var sep = new Gtk.Separator(Gtk.Orientation.VERTICAL);
 
-            nw_name_label.get_style_context ().add_class ("h1-title");
+            nw_name_label.get_style_context ().add_class ("h2-text");
             nw_name_label.set_halign(Gtk.Align.START);
             nw_id_label.set_halign(Gtk.Align.START);
 

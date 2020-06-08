@@ -20,38 +20,18 @@ using App.Utils;
 namespace App.Widgets {
 
     public class HeaderBar : Gtk.HeaderBar {
-
-        public signal void item_selected ();
         
-        public Gtk.MenuButton app_menu;
-        public Gtk.Menu       menu;   
+        public Gtk.Button add_network_button;
 
         public HeaderBar () {
             this.set_title (Configs.Constants.PROGRAME_NAME);
             this.show_close_button = true;
-            icon_settings ();
-        }
 
-        private void icon_settings () {
-            this.app_menu = new Gtk.MenuButton();
-            this.app_menu.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
-            this.app_menu.tooltip_text = Properties.SETTINGS;
+            this.add_network_button = new Gtk.Button();
+            this.add_network_button.set_image(new Gtk.Image.from_icon_name ("add-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+            this.pack_start(this.add_network_button);
             
-            menu_settings ();
-            
-            this.app_menu.popup = this.menu;
-            this.pack_end (this.app_menu);
         }
 
-        private void menu_settings () {
-            var about_item = new Gtk.MenuItem.with_label (Properties.PREFERENCES);
-            about_item.activate.connect(() => {
-                item_selected ();
-            });
-
-            this.menu = new Gtk.Menu ();
-            this.menu.add (about_item);
-            this.menu.show_all ();
-        }
     }
 }

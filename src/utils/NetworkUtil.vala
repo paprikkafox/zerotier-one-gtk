@@ -118,5 +118,36 @@ namespace App.Utils {
 
             return(networks);
         }
+
+        public int createAuthToken (){
+            new Thread<int>("create_new_auth_token", () => {
+
+                try {
+                    Process.spawn_command_line_sync ("pkexec cat /var/lib/zerotier-one/authtoken.secret",
+                                                out Output,
+                                                out Error,
+                                                out StatusCode);
+
+                    var token = File.new_for_path (GLib.Environment.get_home_dir() + "/.zeroTierOneAuthToken");
+
+                    try{
+                        var file_stream = token.create (FileCreateFlags.NONE);
+                        var data_stream = new DataOutputStream (file_stream);
+                        data_stream.put_string (Output);
+                    } catch (Error e){
+                        print("[ERROR] Cannot create ZeroTier One auth token file");
+                    };
+
+                } catch (SpawnError e) {
+                    print("[ERROR] Something happened when spawning CLI process - " + Error);
+                    return(e.code);
+                };
+
+                return(0);
+
+            });
+            
+            return(0);
+        }
     }
 }

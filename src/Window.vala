@@ -15,7 +15,6 @@
 */
 
 using App.Configs;
-using App.Controllers;
 using App.Views;
 using App.Widgets;
 using App.Utils;
@@ -32,10 +31,10 @@ namespace App {
             Object (
                 application: app,
                 icon_name: Constants.APP_ICON,
-                width_request: 500,
+                width_request: 600,
                 height_request: 600,
                 deletable : true,
-                resizable : false
+                resizable : true
             );
 
             var settings = App.Configs.Settings.get_instance ();
@@ -49,6 +48,12 @@ namespace App {
             style_provider ();
 
             headerbar = new HeaderBar();
+
+            headerbar.add_network_button.clicked.connect (() => {
+                var add_network_dialog = new App.Widgets.DialogAddNetwork(this, view_stack);
+                add_network_dialog.show();
+            });
+
             set_titlebar(headerbar);
 
             build (app);
@@ -72,11 +77,8 @@ namespace App {
 
             this.add(view_stack);
 
-            view_stack.add_named(new WelcomeView (this, view_stack), "welcome-view"); 
-            view_stack.add_named(new NetworksView (this), "networks-view"); 
-
-            new AppController (this, this);
-            //  var nwks = new NetworkUtil().networks_from_json_object(new NetworkUtil().get_list_of_networks());
+            view_stack.add_named(new WelcomeView (), "welcome-view"); 
+            view_stack.add_named(new NetworksView (), "networks-view"); 
 
         }
         

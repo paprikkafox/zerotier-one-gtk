@@ -19,26 +19,24 @@ using App.Widgets;
 namespace App.Views {
 
     public class WelcomeView : Gtk.Box {
+        
+        public WelcomeView () {
 
-        public WelcomeView (Gtk.ApplicationWindow app, Gtk.Stack view_stack) {
+            this.set_orientation(Gtk.Orientation.VERTICAL);
+            this.homogeneous = true;
 
-            var welcome_box = new Granite.Widgets.Welcome("Stay connected", "To add some networks click 'Add' button below");
-            welcome_box.append("network-vpn", "Add Network", "Enter ZeroTier One Network ID");
+            var welcome_header = new Gtk.Label("Stay connected");
+            var welcome_description = new Gtk.Label("To add some networks click 'Add' button on the top bar");
+            var welcome_image = new Gtk.Image.from_icon_name("network-server", Gtk.IconSize.DIALOG);
+            
 
-            welcome_box.activated.connect ((index) => {
-                switch (index) {
-                    case 0:
-                        try {
-                            var connect_dialog = new DialogAddNetwork (app, view_stack);
-                            connect_dialog.show_all ();
-                        } catch (Error e) {
-                            warning (e.message);
-                        }
-    
-                        break;
-                }
-            });
-            this.add(welcome_box);
+            welcome_header.get_style_context ().add_class ("h1-text");
+            welcome_image.pixel_size = 128;
+        
+            this.add(welcome_header);
+            this.add(welcome_image);
+            this.add(welcome_description);
+
         }
     }
 }
