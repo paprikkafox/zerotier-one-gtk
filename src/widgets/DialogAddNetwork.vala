@@ -16,6 +16,7 @@
 
 using App.Configs;
 using App.Utils;
+using App.Views;
 
 namespace App.Widgets {
 
@@ -51,13 +52,14 @@ namespace App.Widgets {
 
             container.add(network_id);
             container.show_all();
-            
-
 
             var response = this.run();
             if (response == Gtk.ResponseType.OK){
                 print("Connect dialog closed by clicking OK button\n");
+
                 new NetworkUtil().connect_to_network_id(network_id.get_text());
+                new NetworksView().update_networks_view();
+
                 view_stack.set_visible_child_name("networks-view");
             }
             else if (response == Gtk.ResponseType.CANCEL){

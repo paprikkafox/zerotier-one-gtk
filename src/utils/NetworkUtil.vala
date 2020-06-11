@@ -28,7 +28,23 @@ namespace App.Utils {
                                             out Output,
                                             out Error,
                                             out StatusCode);
-                print("[DEBUG] Connecting to network, status code - " + StatusCode.to_string() + "\n");
+                print("[DEBUG] Connecting to network. Status code - " + StatusCode.to_string() + "\n");
+            } catch (SpawnError e) {
+                print("[ERROR] Something happened when spawning CLI process " + e.code.to_string());
+                return(e.code);
+            }
+                
+            return(0);
+    
+        }
+
+        public int disconnect_from_network_id (string network_id) {
+            try {
+                Process.spawn_command_line_sync ("zerotier-cli leave " + network_id,
+                                            out Output,
+                                            out Error,
+                                            out StatusCode);
+                print("[DEBUG] Leaving network. Status code - " + StatusCode.to_string() + "\n");
             } catch (SpawnError e) {
                 print("[ERROR] Something happened when spawning CLI process " + e.code.to_string());
                 return(e.code);

@@ -8,7 +8,7 @@
             "name": "Debug",
             "type": "gdb",
             "request": "launch",
-            "target": "${workspaceRoot}/builddir/src/zerotieronegtk",
+            "target": "${workspaceRoot}/builddir/com.github.paprikkafox.zerotier-one-gtk",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText"
         }

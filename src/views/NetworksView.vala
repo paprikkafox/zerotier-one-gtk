@@ -25,6 +25,7 @@ namespace App.Views {
         public string Output;
 
         public Gtk.ListBox network_list;
+        public Gtk.Viewport viewport;
         public Gtk.ListBoxRow NetworkRow;
 
         public NetworksView () {
@@ -33,7 +34,7 @@ namespace App.Views {
 
             var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
-            var viewport = new Gtk.Viewport(null, null);
+            viewport = new Gtk.Viewport(null, null);
             viewport.set_halign(Gtk.Align.CENTER);
             viewport.width_request = 450;
 
@@ -44,37 +45,38 @@ namespace App.Views {
             view_header.margin_top = 35;
             view_header.margin_bottom = 35;
 
-            network_list = new Gtk.ListBox();
-            network_list.get_style_context ().add_class ("network-list");
-    
-            var nwks = new NetworkUtil().networks_from_json_object(new NetworkUtil().get_list_of_networks());
-            network_list.selection_mode = Gtk.SelectionMode.NONE;
-
-            var name = nwks[1, 0];
-            var id = nwks[1, 1];
-            var status = nwks[1, 2];
-            var type = nwks[1, 3];
-            var ips = nwks[1, 4];
-
-            network_list.add(new App.Widgets.NetworkRow(name, id, status, type, ips));
-
-            name = nwks[2, 0];
-            id = nwks[2, 1];
-            status = nwks[2, 2];
-            type = nwks[2, 3];
-            ips = nwks[2, 4];
-
-            network_list.add(new App.Widgets.NetworkRow(name, id, status, type, ips));
-
-
-            network_list.row_activated.connect((row) => { ((NetworkRow)row).toggle_revealer(); });
-
-            viewport.add(network_list);
+            update_networks_view();
 
             content.add(view_header);
             content.add(viewport);
             
             this.add(content);
+        }
+
+        public int update_networks_view(){
+
+            var networks_array = new NetworkUtil().networks_from_json_object(new NetworkUtil().get_list_of_networks());
+            
+            if (networks_array[0, 0] != null) {
+
+                network_list = new Gtk.ListBox();
+                network_list.get_style_context ().add_class ("network-list");
+                network_list.selection_mode = Gtk.SelectionMode.NONE;
+                network_list.row_activated.connect((row) => { ((NetworkRow)row).toggle_revealer(); });
+
+                var networks_array_lenght = int.parse(networks_array[0, 0]);
+                print("[DEBUG] Recived Networks JSON" + "\n");
+                var i = 0;
+                for(i = 0; i < networks_array_lenght; i++){
+                    network_list.add(new App.Widgets.NetworkRow(networks_array[i + 1, 0], networks_array[i + 1, 1], networks_array[i + 1, 2], networks_array[i + 1, 3], networks_array[i + 1, 4]));
+                }
+                this.viewport.add(network_list);
+
+            } else {
+                print("Empty network list - it is NULL");
+            }
+
+            return(0);
         }
     }
 }

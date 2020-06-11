@@ -119,9 +119,16 @@ namespace App.Widgets {
             var bottom_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
             bottom_box.margin = 15;
             var disconnect_button = new Gtk.Button();
-            disconnect_button.label = "Disconnect";
+            disconnect_button.label = "Leave";
             disconnect_button.width_request = 100;
             disconnect_button.halign = Gtk.Align.END;
+
+            disconnect_button.clicked.connect (() => {
+                new NetworkUtil().disconnect_from_network_id(network_id.get_text());
+                this.destroy();
+                
+            });
+
             bottom_box.pack_end(disconnect_button);
 
             // Extended info about network (hidden by revealer)
@@ -141,6 +148,8 @@ namespace App.Widgets {
             this.add(eventbox);
 
         }
+
+
 
         public void toggle_revealer (){
             properties_revealer.set_reveal_child(!properties_revealer.get_reveal_child());

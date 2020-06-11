@@ -75,7 +75,7 @@ namespace App {
             view_stack = new Gtk.Stack();
             view_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE); 
 
-            //  view_stack.add_named(new WelcomeView (view_stack), "welcome-view"); 
+            view_stack.add_named(new WelcomeView (view_stack), "welcome-view"); 
             view_stack.add_named(new NetworksView (), "networks-view"); 
 
             this.add(view_stack);
