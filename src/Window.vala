@@ -31,8 +31,8 @@ namespace App {
             Object (
                 application: app,
                 icon_name: Constants.APP_ICON,
-                width_request: 600,
-                height_request: 600,
+                width_request: 550,
+                height_request: 650,
                 deletable : true,
                 resizable : true
             );
@@ -75,10 +75,13 @@ namespace App {
             view_stack = new Gtk.Stack();
             view_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE); 
 
+            //  view_stack.add_named(new WelcomeView (view_stack), "welcome-view"); 
+            view_stack.add_named(new NetworksView (), "networks-view"); 
+
             this.add(view_stack);
 
-            view_stack.add_named(new WelcomeView (), "welcome-view"); 
-            view_stack.add_named(new NetworksView (), "networks-view"); 
+
+            
 
         }
         

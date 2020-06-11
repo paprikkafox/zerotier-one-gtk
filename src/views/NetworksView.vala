@@ -18,24 +18,22 @@ using App.Widgets;
 using App.Utils;
 namespace App.Views {
 
-    public class NetworksView : Gtk.Box{
+    public class NetworksView : Gtk.ScrolledWindow{
 
         public int StatusCode;
         public string Error;
         public string Output;
 
         public Gtk.ListBox network_list;
+        public Gtk.ListBoxRow NetworkRow;
 
         public NetworksView () {
 
-            this.orientation = Gtk.Orientation.VERTICAL;
+            this.expand = true;
 
-            var scrolled_window = new Gtk.ScrolledWindow(null, null);
+            var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+
             var viewport = new Gtk.Viewport(null, null);
-
-            scrolled_window.expand = true;
-            scrolled_window.add(viewport);
-
             viewport.set_halign(Gtk.Align.CENTER);
             viewport.width_request = 450;
 
@@ -46,33 +44,37 @@ namespace App.Views {
             view_header.margin_top = 35;
             view_header.margin_bottom = 35;
 
-
             network_list = new Gtk.ListBox();
-            
-            if (FileUtils.test(GLib.Environment.get_home_dir() + "/.zeroTierOneAuthToken", FileTest.EXISTS) == true){
-                print("[DEBUG] All is OK, listing some networks...");
+            network_list.get_style_context ().add_class ("network-list");
+    
+            var nwks = new NetworkUtil().networks_from_json_object(new NetworkUtil().get_list_of_networks());
+            network_list.selection_mode = Gtk.SelectionMode.NONE;
 
-                //newtworks list code
+            var name = nwks[1, 0];
+            var id = nwks[1, 1];
+            var status = nwks[1, 2];
+            var type = nwks[1, 3];
+            var ips = nwks[1, 4];
+
+            network_list.add(new App.Widgets.NetworkRow(name, id, status, type, ips));
+
+            name = nwks[2, 0];
+            id = nwks[2, 1];
+            status = nwks[2, 2];
+            type = nwks[2, 3];
+            ips = nwks[2, 4];
+
+            network_list.add(new App.Widgets.NetworkRow(name, id, status, type, ips));
 
 
-            } else {
-                print("[DEBUG] Auth file not exsists! Creating a new one...");
-
-                new NetworkUtil().createAuthToken();
-            }
-
-            
-            //  var nwks = new NetworkUtil().networks_from_json_object(new NetworkUtil().get_list_of_networks());
-
-            network_list.add(new App.Widgets.NetworkRow());
-            network_list.add(new App.Widgets.NetworkRow());
-            network_list.add(new App.Widgets.NetworkRow());
-
+            network_list.row_activated.connect((row) => { ((NetworkRow)row).toggle_revealer(); });
 
             viewport.add(network_list);
+
+            content.add(view_header);
+            content.add(viewport);
             
-            this.add(view_header);
-            this.add(scrolled_window);
+            this.add(content);
         }
     }
 }

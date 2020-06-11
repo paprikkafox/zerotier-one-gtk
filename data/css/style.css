@@ -23,9 +23,32 @@
     font-weight: bolder;
 }
 
+.h2-text {
+    font-size: 18px;
+    font-family: "Cantarell";
+    font-weight: bold;
+}
+
 .h4-text {
     font-size: 12px;
     font-family: "Cantarell";
     font-weight: normal;
 }
 
+.h5-text-bold {
+    font-size: 12px;
+    font-family: "Cantarell";
+    font-weight: bold;
+}
+
+.network-list {
+    background-color: rgb(246,245,244);
+}
+.network-row {
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 5px;
+  }
+  
+.network-row:hover {
+    background-color: rgb(230, 230, 230);
+}

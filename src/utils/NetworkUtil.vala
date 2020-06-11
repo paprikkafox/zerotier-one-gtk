@@ -24,7 +24,7 @@ namespace App.Utils {
 
         public int connect_to_network_id (string network_id) {
             try {
-                Process.spawn_command_line_sync ("pkexec zerotier-cli join " + network_id,
+                Process.spawn_command_line_sync ("zerotier-cli join " + network_id,
                                             out Output,
                                             out Error,
                                             out StatusCode);
@@ -39,20 +39,17 @@ namespace App.Utils {
         }
 
         public string get_list_of_networks () {
-            new Thread<int>("add_network_nodes_to_view", () => {
-                try {
-                    Process.spawn_command_line_sync ("pkexec zerotier-cli -j listnetworks",
-                                                out Output,
-                                                out Error,
-                                                out StatusCode);
-                    print("[DEBUG] Spawned ZeroTier CLI - ListNetworks\n");
+            try {
+                Process.spawn_command_line_sync ("zerotier-cli -j listnetworks",
+                                            out Output,
+                                            out Error,
+                                            out StatusCode);
+                print("[DEBUG] Spawned ZeroTier CLI - ListNetworks\n");
     
-                } catch (SpawnError e) {
-                    print("[ERROR] Something happened when spawning CLI process - " + Error);
-                    return(e.code);
-                };
-                return(0);
-            });
+            } catch (SpawnError e) {
+                print("[ERROR] Something happened when spawning CLI process - " + Error);
+                return(Error);
+            };
             
             return(Output);
         }
@@ -120,9 +117,7 @@ namespace App.Utils {
         }
 
         public int createAuthToken (){
-            new Thread<int>("create_new_auth_token", () => {
-
-                try {
+            try {
                     Process.spawn_command_line_sync ("pkexec cat /var/lib/zerotier-one/authtoken.secret",
                                                 out Output,
                                                 out Error,
@@ -143,10 +138,6 @@ namespace App.Utils {
                     return(e.code);
                 };
 
-                return(0);
-
-            });
-            
             return(0);
         }
     }

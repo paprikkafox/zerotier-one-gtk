@@ -21,77 +21,129 @@ namespace App.Widgets {
 
     public class NetworkRow : Gtk.ListBoxRow {   
 
-        public int row_id;
+        public Gtk.Revealer properties_revealer;
 
-        public string nw_name = "N";
-        public string nw_id = "asd213123";
-        public string nw_auth_status = "OK";
-        public string nw_type = "PRIVATE";
-        public string mac_addr = "11:11:11:11:11";
-        public string nw_assigned_ips = "111.111.111.111";
+        public Gtk.Label network_name;
+        public Gtk.Label network_id;
 
-        public NetworkRow () {
+        public Gtk.Label network_status;
+        public Gtk.Label network_type;
+        public Gtk.Label network_ips;
 
-            height_request = 80;
-            expand = true;
-            selectable = false;
-            
-            var container1 = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-            var container2 = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-            var container3 = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-            var labels_grid = new Gtk.Grid();
+        public NetworkRow (string name, string id, string status, string type, string ips) {
 
-            var network_status_icon = new Gtk.Image.from_icon_name("emblem-shared", Gtk.IconSize.DIALOG);
+            this.get_style_context ().add_class ("network-row");
+            this.margin_bottom = 15;
 
-            var nw_name_label = new Gtk.Label(nw_name);
-            var nw_id_label = new Gtk.Label(nw_id);
+            // Main Container
+            var eventbox = new Gtk.EventBox();
+            // Row Content Container (Subcontainer)
+            var row_content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
-            var nw_auth_status_label = new Gtk.Label(nw_auth_status);
-            var nw_type_label = new Gtk.Label(nw_type);
-            var mac_addr_label = new Gtk.Label(mac_addr);
-            var nw_assigned_ips_label = new Gtk.Label(nw_assigned_ips); 
+            // Status icon stack
+            var network_status_stack = new Gtk.Stack();
+            network_status_stack.set_size_request(64,64);
 
-            var sep = new Gtk.Separator(Gtk.Orientation.VERTICAL);
+            var status_image_ok = new Gtk.Image.from_icon_name("add-symbolic", Gtk.IconSize.DIALOG);
+            var status_image_auth = new Gtk.Image.from_icon_name("add-symbolic", Gtk.IconSize.DIALOG);
 
-            nw_name_label.get_style_context ().add_class ("h2-text");
-            nw_name_label.set_halign(Gtk.Align.START);
-            nw_id_label.set_halign(Gtk.Align.START);
+            network_status_stack.add_named(status_image_ok, "status-ok");
+            network_status_stack.add_named(status_image_auth, "status-auth");
 
-            sep.width_request = 450; 
-            sep.height_request = 2;
-            sep.set_halign(Gtk.Align.CENTER);
+            // Network row name labels
+            var row_header_labels = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
-            container1.add(container2);
-            container1.add(sep);
-            container1.add(labels_grid);
+            row_header_labels.valign = Gtk.Align.CENTER;
+            network_name = new Gtk.Label(name);
+            network_name.halign = Gtk.Align.START;
+            network_name.get_style_context ().add_class ("h1-text");
 
-            container2.margin_top = 15;
-            container2.margin_bottom = 15;
-            container2.margin_start = 15;
-            container2.add(network_status_icon);
-            container2.add(container3);
+            network_id = new Gtk.Label(id);
+            network_id.halign = Gtk.Align.START;
+            network_id.get_style_context ().add_class ("h4-text");
 
-            container3.margin_start = 15;
-            container3.set_valign(Gtk.Align.CENTER);
-            container3.add(nw_name_label);
-            container3.add(nw_id_label);
+            row_header_labels.add(network_name);
+            row_header_labels.add(network_id);
 
-            labels_grid.column_homogeneous = true;
-            labels_grid.margin_top = 15;
-            labels_grid.margin_bottom = 15;
+            // Row head container
+            var row_header = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+            row_header.add(network_status_stack);
+            row_header.add(row_header_labels);
 
-            labels_grid.attach(new Gtk.Label("Status"), 0, 0, 1, 1);
-            labels_grid.attach(new Gtk.Label("Network type"), 0, 1, 1, 1);
-            labels_grid.attach(new Gtk.Label("MAC address"), 0, 2, 1, 1);
-            labels_grid.attach(new Gtk.Label("Assigned IPs"), 0, 3, 1, 1);
+            // Network info box
+            var info_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
+            info_box.margin = 15;
 
-            labels_grid.attach(nw_auth_status_label, 1, 0, 1, 1);
-            labels_grid.attach(nw_type_label, 1, 1, 1, 1);
-            labels_grid.attach(mac_addr_label, 1, 2, 1, 1);
-            labels_grid.attach(nw_assigned_ips_label, 1, 3, 1, 1);
+            var cont1 = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            var cont2 = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
-            this.add(container1);
-            
+            cont1.expand = true;
+            cont1.halign = Gtk.Align.END;
+            cont1.margin_end = 15;
+            cont1.spacing = 4;
+
+            cont2.expand = true;
+            cont2.halign = Gtk.Align.START;
+            cont2.margin_start = 15;
+            cont2.spacing = 4;
+
+            var nwk_status_title = new Gtk.Label("Network status");
+            var nwk_type_title = new Gtk.Label("Type");
+            var nwk_ips_title = new Gtk.Label("Network IPs");
+
+            nwk_status_title.halign = Gtk.Align.END;
+            nwk_type_title.halign = Gtk.Align.END;
+            nwk_ips_title.halign = Gtk.Align.END;
+
+            network_status = new Gtk.Label(status);
+            network_type = new Gtk.Label(type);
+            network_ips = new Gtk.Label(ips);
+
+            network_status.halign = Gtk.Align.START;
+            network_type.halign = Gtk.Align.START;
+            network_ips.halign = Gtk.Align.START;
+
+            cont1.add(nwk_status_title);
+            cont1.add(nwk_type_title);
+            cont1.add(nwk_ips_title);
+
+            cont2.add(network_status);
+            cont2.add(network_type);
+            cont2.add(network_ips);
+
+            info_box.add(cont1);
+            info_box.add(new Gtk.Separator(Gtk.Orientation.VERTICAL));
+            info_box.add(cont2);
+
+            // Bottom (buttons) box
+            var bottom_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+            bottom_box.margin = 15;
+            var disconnect_button = new Gtk.Button();
+            disconnect_button.label = "Disconnect";
+            disconnect_button.width_request = 100;
+            disconnect_button.halign = Gtk.Align.END;
+            bottom_box.pack_end(disconnect_button);
+
+            // Extended info about network (hidden by revealer)
+            var properties_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            properties_box.add(new Gtk.Separator(Gtk.Orientation.HORIZONTAL));
+            properties_box.add(info_box);
+            properties_box.add(new Gtk.Separator(Gtk.Orientation.HORIZONTAL));
+            properties_box.add(bottom_box);
+
+            // Setting a new instance of Gtk.Revealer
+            properties_revealer = new Gtk.Revealer();
+            properties_revealer.add(properties_box);
+
+            row_content.add(row_header);
+            row_content.add(properties_revealer);
+            eventbox.add(row_content);
+            this.add(eventbox);
+
+        }
+
+        public void toggle_revealer (){
+            properties_revealer.set_reveal_child(!properties_revealer.get_reveal_child());
         }
     }
 }
