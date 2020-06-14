@@ -55,15 +55,18 @@ namespace App.Widgets {
 
             var response = this.run();
             if (response == Gtk.ResponseType.OK){
-                print("Connect dialog closed by clicking OK button\n");
-
-                new NetworkUtil().connect_to_network_id(network_id.get_text());
-                new NetworksView().update_networks_view();
-
-                view_stack.set_visible_child_name("networks-view");
+                print("[DEBUG] Connect dialog closed by clicking OK button\n");
+                if (network_id.get_text() == ""){
+                    this.destroy();
+                } else {
+                    new NetworkUtil().connect_to_network_id(network_id.get_text());
+                    //here we need to go and update networks view
+                    //  new NetworksView().update_networks_view();
+                    view_stack.set_visible_child_name("networks-view");
+                }
             }
             else if (response == Gtk.ResponseType.CANCEL){
-                print("Connect dialog closed by clicking CANCEL button\n");
+                print("[DEBUG] Connect dialog closed by clicking CANCEL button\n");
             } 
 
             this.destroy();

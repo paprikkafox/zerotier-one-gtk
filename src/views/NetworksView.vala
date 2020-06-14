@@ -28,7 +28,10 @@ namespace App.Views {
         public Gtk.Viewport viewport;
         public Gtk.ListBoxRow NetworkRow;
 
-        public NetworksView () {
+        string [,] networks_array;
+        int networks_array_lenght;
+
+        public NetworksView (string[,] networks_array, int networks_array_lenght) {
 
             this.expand = true;
 
@@ -45,36 +48,37 @@ namespace App.Views {
             view_header.margin_top = 35;
             view_header.margin_bottom = 35;
 
+            network_list = new Gtk.ListBox();
+            network_list.get_style_context ().add_class ("network-list");
+            network_list.selection_mode = Gtk.SelectionMode.NONE;
+            network_list.row_activated.connect((row) => { ((NetworkRow)row).toggle_revealer(); });
+
+            this.networks_array = networks_array;
+            this.networks_array_lenght = networks_array_lenght;
+            
             update_networks_view();
 
             content.add(view_header);
             content.add(viewport);
             
             this.add(content);
+            this.show();
         }
 
         public int update_networks_view(){
 
-            var networks_array = new NetworkUtil().networks_from_json_object(new NetworkUtil().get_list_of_networks());
-            
-            if (networks_array[0, 0] != null) {
+            var rows = network_list.get_children();
 
-                network_list = new Gtk.ListBox();
-                network_list.get_style_context ().add_class ("network-list");
-                network_list.selection_mode = Gtk.SelectionMode.NONE;
-                network_list.row_activated.connect((row) => { ((NetworkRow)row).toggle_revealer(); });
-
-                var networks_array_lenght = int.parse(networks_array[0, 0]);
-                print("[DEBUG] Recived Networks JSON" + "\n");
-                var i = 0;
-                for(i = 0; i < networks_array_lenght; i++){
-                    network_list.add(new App.Widgets.NetworkRow(networks_array[i + 1, 0], networks_array[i + 1, 1], networks_array[i + 1, 2], networks_array[i + 1, 3], networks_array[i + 1, 4]));
-                }
-                this.viewport.add(network_list);
-
-            } else {
-                print("Empty network list - it is NULL");
+            foreach(Gtk.Widget element in rows){
+                element.destroy();
             }
+
+            print("[DEBUG] Adding rows to networks view - FROM NETVIEW" + "\n");
+            var i = 0;
+            for(i = 0; i < networks_array_lenght; i++){
+                network_list.add(new App.Widgets.NetworkRow(networks_array[i + 1, 0], networks_array[i + 1, 1], networks_array[i + 1, 2], networks_array[i + 1, 3], networks_array[i + 1, 4]));
+            }
+            this.viewport.add(network_list);
 
             return(0);
         }

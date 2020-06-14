@@ -26,6 +26,9 @@ namespace App {
         public HeaderBar headerbar;
         public Gtk.Stack view_stack;
 
+        public string[,] networks_array;
+        public int networks_array_lenght;
+
         public Window (Gtk.Application app) {
             
             Object (
@@ -73,16 +76,12 @@ namespace App {
         private void build (Gtk.Application app) {
 
             view_stack = new Gtk.Stack();
-            view_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE); 
+            view_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
 
             view_stack.add_named(new WelcomeView (view_stack), "welcome-view"); 
-            view_stack.add_named(new NetworksView (), "networks-view"); 
-
-            this.add(view_stack);
-
-
             
-
+            this.add(view_stack);
+            
         }
         
     }
