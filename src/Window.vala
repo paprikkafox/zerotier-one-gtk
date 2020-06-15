@@ -26,8 +26,8 @@ namespace App {
         public HeaderBar headerbar;
         public Gtk.Stack view_stack;
 
-        public string[,] networks_array;
-        public int networks_array_lenght;
+        string [,] networks_array;
+        int networks_array_lenght;
 
         public Window (Gtk.Application app) {
             
@@ -78,7 +78,30 @@ namespace App {
             view_stack = new Gtk.Stack();
             view_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE);
 
-            view_stack.add_named(new WelcomeView (view_stack), "welcome-view"); 
+            view_stack.add_named(new WelcomeView (), "welcome-view");
+
+            if (new NetworkUtil().check_auth_token() != 0){
+                view_stack.add_named(new SetupScreenView (view_stack), "setup-screen-view");
+                view_stack.set_visible_child_name("setup-screen-view");
+                view_stack.get_child_by_name("setup-screen-view").show_all();
+            } else {
+                networks_array = new NetworkUtil().get_networks_array();
+                networks_array_lenght = new NetworkUtil().get_networks_array_lenght();
+
+                view_stack.add_named(new NetworksView (), "networks-view");
+
+                if (networks_array_lenght == 0) {
+                    view_stack.set_visible_child_name("welcome-view");
+                    view_stack.get_child_by_name("welcome-view").show_all();
+                } else {
+                    view_stack.set_visible_child_name("networks-view");
+
+                    new NetworksView().update_networks_view(networks_array, networks_array_lenght);
+
+                    view_stack.get_child_by_name("networks-view").show_all();
+
+                }
+            }
             
             this.add(view_stack);
             

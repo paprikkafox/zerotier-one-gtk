@@ -20,22 +20,17 @@ namespace App.Views {
 
     public class NetworksView : Gtk.ScrolledWindow{
 
-        public int StatusCode;
-        public string Error;
-        public string Output;
-
-        public Gtk.ListBox network_list;
+        public Gtk.Box content;
         public Gtk.Viewport viewport;
+        public Gtk.ListBox network_list;
+
         public Gtk.ListBoxRow NetworkRow;
 
-        string [,] networks_array;
-        int networks_array_lenght;
-
-        public NetworksView (string[,] networks_array, int networks_array_lenght) {
+        public NetworksView () {
 
             this.expand = true;
 
-            var content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
             viewport = new Gtk.Viewport(null, null);
             viewport.set_halign(Gtk.Align.CENTER);
@@ -53,34 +48,30 @@ namespace App.Views {
             network_list.selection_mode = Gtk.SelectionMode.NONE;
             network_list.row_activated.connect((row) => { ((NetworkRow)row).toggle_revealer(); });
 
-            this.networks_array = networks_array;
-            this.networks_array_lenght = networks_array_lenght;
-            
-            update_networks_view();
+            //
 
+
+            viewport.add(network_list);
             content.add(view_header);
             content.add(viewport);
-            
+
             this.add(content);
-            this.show();
         }
 
-        public int update_networks_view(){
-
+        public void update_networks_view(string[,] networks_array, int networks_array_lenght){
+            
             var rows = network_list.get_children();
 
             foreach(Gtk.Widget element in rows){
                 element.destroy();
-            }
+             }
 
             print("[DEBUG] Adding rows to networks view - FROM NETVIEW" + "\n");
             var i = 0;
             for(i = 0; i < networks_array_lenght; i++){
                 network_list.add(new App.Widgets.NetworkRow(networks_array[i + 1, 0], networks_array[i + 1, 1], networks_array[i + 1, 2], networks_array[i + 1, 3], networks_array[i + 1, 4]));
             }
-            this.viewport.add(network_list);
 
-            return(0);
         }
     }
 }

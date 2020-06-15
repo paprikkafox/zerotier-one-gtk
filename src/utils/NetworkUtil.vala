@@ -28,59 +28,56 @@ namespace App.Utils {
                                             out Output,
                                             out Error,
                                             out StatusCode);
-                print("[DEBUG] Connecting to network. Status code - " + StatusCode.to_string() + " - FROM NETUTILS\n");
+                print("[DEBUG] Connecting to network. Status code - " + StatusCode.to_string() + "\n");
             } catch (SpawnError e) {
-                print("[ERROR] Something happened when spawning CLI process " + e.code.to_string() + " - FROM NETUTILS\n");
+                print("[ERROR] Error while spawning CLI process " + e.code.to_string() + "\n");
                 return(e.code);
             }
                 
             return(0);
     
         }
-
         public int disconnect_from_network_id (string network_id) {
             try {
                 Process.spawn_command_line_sync ("zerotier-cli leave " + network_id,
                                             out Output,
                                             out Error,
                                             out StatusCode);
-                print("[DEBUG] Leaving network. Status code - " + StatusCode.to_string() + " - FROM NETUTILS\n");
+                print("[DEBUG] Leaving network. Status code - " + StatusCode.to_string() + "\n");
             } catch (SpawnError e) {
-                print("[ERROR] Something happened when spawning CLI process " + e.code.to_string() + " - FROM NETUTILS\n");
+                print("[ERROR] Error while spawning CLI process " + e.code.to_string() + "\n");
                 return(e.code);
             }
                 
             return(0);
     
         }
-
-        public string get_list_of_networks () {
+        public string get_networks_json () {
             try {
                 Process.spawn_command_line_sync ("zerotier-cli -j listnetworks",
                                             out Output,
                                             out Error,
                                             out StatusCode);
-                print("[DEBUG] Spawned ZeroTier CLI - ListNetworks" + " - FROM NETUTILS\n");
+                print("[DEBUG] Spawned ZeroTier CLI - ListNetworks" + "\n");
     
             } catch (SpawnError e) {
-                print("[ERROR] Something happened when spawning CLI process - " + Error + " - FROM NETUTILS\n");
+                print("[ERROR] Error while spawning CLI process - " + Error + "\n");
                 return(Error);
             };
             
             return(Output);
         }
-
-        public string[,] networks_from_json_object(string networks_json){
+        public string[,] get_networks_array(){
 
             uint array_lenght;
 
             Json.Parser parser = new Json.Parser ();
 
             try {
-		        parser.load_from_data(networks_json);
+		        parser.load_from_data(get_networks_json());
 
 	        } catch (Error e) {
-		        print("[ERROR] Catched a error while building JSON parser - " + e.code.to_string() + " - FROM NETUTILS\n");
+		        print("[ERROR] Error while building JSON parser - " + e.code.to_string() + "\n");
 	        }
 
             Json.Node root = parser.get_root();
@@ -131,8 +128,19 @@ namespace App.Utils {
 
             return(networks);
         }
+        public int get_networks_array_lenght(){
+            var networks_array = get_networks_array();
+            var networks_array_lenght = 0;
 
-        public int createAuthToken (){
+            if (networks_array[0, 0] != null){
+                networks_array_lenght = int.parse(networks_array[0, 0]);
+            } else {
+                print("[DEBUG] Networks is NULL or Empty\n");
+            }
+
+            return(networks_array_lenght);
+        }
+        public int create_auth_token (){
             try {
                     Process.spawn_command_line_sync ("pkexec cat /var/lib/zerotier-one/authtoken.secret",
                                                 out Output,
@@ -147,22 +155,22 @@ namespace App.Utils {
                             var data_stream = new DataOutputStream (file_stream);
                             data_stream.put_string (Output);
                         } catch (Error e){
-                            print("[ERROR] Cannot create ZeroTier One auth token file" + " - FROM NETUTILS\n");
+                            print("[ERROR] Cannot create Auth Token file\n");
                         };
                     }
                 } catch (SpawnError e) {
-                    print("[ERROR] Something happened when spawning CLI process - " + Error + " - FROM NETUTILS\n");
+                    print("[ERROR] Error while spawning CLI process - " + Error + "\n");
                     return(e.code);
                 };
 
             return(0);
         }
-        public int checkAuthToken(){
+        public int check_auth_token(){
             if (FileUtils.test(GLib.Environment.get_home_dir() + "/.zeroTierOneAuthToken", FileTest.EXISTS) == true){
-                print("[DEBUG] User Auth is OK - trying list networks - FROM WELCOME\n");
+                print("[DEBUG] User Auth Token is OK\n");
                 return 0;
             } else {
-                print("[DEBUG] User auth token not exsists! Showing SETUP - FROM WELCOME\n");
+                print("[DEBUG] User Auth Token not exsists!\n");
                 return 1;
             }
         }

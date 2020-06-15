@@ -5,6 +5,7 @@ sources = files(
 
     'utils/NetworkUtil.vala',
 
+    'views/SetupScreenView.vala',
     'views/WelcomeView.vala',
     'views/NetworksView.vala',
 
